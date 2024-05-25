@@ -22,6 +22,7 @@ jobs:
           lfs: false
       - name: Set up Node.js environment
         run: |
+          npm cache clean --force
           npm install
       - name: Build And Deploy
         id: builddeploy
