@@ -21,7 +21,10 @@
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"]
   },
-  "include": ["src/**/*", "node_modules/preline/src/index.ts"],
+  "include": [
+    "src/**/*", 
+    "node_modules/preline/src/index.ts"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
