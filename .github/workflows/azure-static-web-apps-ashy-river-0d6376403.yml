@@ -22,7 +22,6 @@ jobs:
           lfs: false
       - name: Set up Node.js environment
         run: |
-          npm install -g @angular/cli@18.13.0
           npm install
       - name: Build And Deploy
         id: builddeploy
