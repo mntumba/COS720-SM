@@ -14,7 +14,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
-    container: node:18.13.0 # Specify the Docker image
+    container: docker://debian:stretch-slim
     steps:
       - uses: actions/checkout@v4
         with:
