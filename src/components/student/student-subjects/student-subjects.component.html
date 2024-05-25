@@ -1,0 +1,271 @@
+<main *ngIf="showSubjects" class="p-6 space-y-6">
+  <div class="flex flex-wrap items-start justify-end -mb-3">
+    <button
+      (click)="registerBtnClicked()"
+      class="inline-flex px-5 py-[5px] font-semibold text-[12px] text-gray-950 bg-[#49cce0] hover:bg-[#4CCBDF] focus:bg-[#4CCBDF] border border-[#49cce0] rounded-md"
+      data-twe-toggle="modal"
+    >
+      <svg
+        class="flex-shrink-0 h-5 w-5 -ml-1 mr-2"
+        focusable="false"
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        data-testid="add-icon"
+      >
+        <path
+          d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h10v-2H4v-6h18V6c0-1.11-.89-2-2-2zm0 4H4V6h16v2zm4 9v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3z"
+        ></path>
+      </svg>
+      Register / Deregister
+    </button>
+  </div>
+  <div class="w-full flex justify-center py-0">
+    <table
+    aria-hidden="true"
+      class="table-auto w-full text-gray-950"
+    >
+      <thead>
+        <tr>
+            <td></td>
+          <td class="px-10 py-2 text-sm font-semibold">Code</td>
+          <td class="px-10 py-2 text-sm font-semibold">Name</td>
+          <td class="px-10 py-2 text-sm font-semibold">Class</td>
+          <td class="px-10 py-2 text-sm font-semibold">
+            Grade
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let subject of registeredSubjects; let i = index"
+          class="cursor-pointer"
+        >
+        <td class="px-2 py-2 text-center text-sm capitalize">
+            {{ i + 1 }}
+          </td>
+          <td class="px-10 py-2 text-sm capitalize">
+            {{ subject.code }}
+          </td>
+          <td class="px-10 py-2 text-sm capitalize">
+            {{ subject.name }}
+          </td>
+          <td class="px-10 py-2 text-sm capitalize">
+            {{ subject.level.description }}
+          </td>
+          <td class="px-10 py-2 text-sm capitalize">0 %</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<main *ngIf="showRegistration" class="px-6 py-4 space-y-6">
+  <div class="w-full flex flex-col justify-center py-0">
+    <div class="text-sm pb-3">
+        Please select the subjects you want to drop or register in the table below.
+    </div>
+    <table
+    aria-hidden="true"
+      class="table-auto w-full text-gray-950"
+    >
+      <thead>
+        <tr>
+          <td>
+          </td>
+          <td class="px-10 py-2 text-sm font-semibold">
+            Action
+          </td>
+          <td class="px-10 py-2 text-sm font-semibold">Name</td>
+          <td class="px-10 py-2 text-sm font-semibold">
+            Class
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let subject of subjects; let i=index">
+          <td class="px-2 py-2 text-center text-sm capitalize">
+            {{ i + 1 }}
+          </td>
+          <td class="px-10 py-2 text-sm capitalize">
+            <button
+            (click)="dropSubjectBtnClicked(subject)"
+              *ngIf="subject.studentSubject != null"
+              class="cursor-pointer inline-flex items-centern justify-center w-16 py-[1px] text-[12px] text-gray-950 border border-red-700 rounded-md"
+              data-twe-toggle="modal"
+              data-twe-target="#dropSubjectModal"
+            >
+              <ion-icon
+                name="trash"
+                class="flex-shrink-0 text-red-700 h-4 w-4 mr-2"
+              ></ion-icon>
+              Drop
+            </button>
+            <button
+                (click)="addSubjectBtnClicked(subject)"
+              *ngIf="subject.studentSubject == null"
+              class="cursor-pointer inline-flex items-center justify-center w-16 py-[1px] text-[12px] text-gray-950 border border-[#49cce0] rounded-md"
+            >
+              <svg
+                class="flex-shrink-0 h-4 w-4 mr-2"
+                focusable="false"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z"
+                ></path>
+                <path
+                  d="M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z"
+                ></path>
+              </svg>
+              Add
+            </button>
+          </td>
+          <td class="px-10 py-2 text-sm capitalize">
+            {{ subject.code }} - {{ subject.name }}
+          </td>
+          <td class="px-10 py-2 text-sm capitalize">
+            {{ subject.level.description }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex justify-end">
+    <button
+      (click)="gobackBtnClicked()"
+      class="inline-flex px-5 py-[5px] font-semibold text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-md"
+    >
+    <svg
+    class="w-4 h-4 text-gray-600 transform transition-transform -rotate-180 mr-2"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M13 5l7 7-7 7M5 5l7 7-7 7"
+    />
+  </svg>
+      Go back
+    </button>
+    <button
+      (click)="nextBtnClicked()"
+      class="inline-flex px-5 py-[5px] ml-2 font-semibold text-[12px] text-gray-950 bg-[#49cce0] hover:bg-[#4CCBDF] border border-[#49cce0] rounded-md"
+    >
+    Next
+    <svg
+    class="w-4 h-4 text-gray-600 ml-2"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M13 5l7 7-7 7M5 5l7 7-7 7"
+    />
+  </svg>
+    </button>
+  </div>
+</main>
+
+<main *ngIf="goNext" class="px-6 py-4 space-y-6">
+    <div>
+    Please check and confim you registration below.
+    </div>
+
+    <table
+    aria-hidden="true"
+      class="table-auto w-[60%] text-gray-950"
+    >
+      <tbody>
+        <tr *ngFor="let subject of studentSubjects">
+          <td class="px-5 py-2 text-sm capitalize">
+            <button
+              (click)="removeSubjectBtnClicked(subject)"
+              class="cursor-pointer inline-flex items-center px-4 py-[1px] text-[12px] text-gray-950 border border-red-700 rounded-lg"
+            >
+              <ion-icon
+                name="trash"
+                class="flex-shrink-0 text-red-700 h-4 w-4 mr-2"
+              ></ion-icon>
+              Remove
+            </button>
+          </td>
+          <td class="px-5 py-2 text-sm capitalize">
+            {{ subject.code }} - {{ subject.name }}
+          </td>
+          <td class="px-5 py-2 text-sm capitalize">
+            {{ subject.level.description }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flex justify-end w-[60%]">
+        <button
+          (click)="cancelBtnClicked()"
+          class="inline-flex px-5 py-[5px] font-semibold text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-lg"
+        >
+          <ion-icon name="close" class="w-4 h-4 mr-1"></ion-icon>
+          Cancel
+        </button>
+        <button
+          (click)="register()"
+          class="inline-flex px-5 py-[5px] ml-2 font-semibold text-[12px] text-gray-950 bg-[#46b0c0] hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-lg"
+        >
+        <ion-icon name="checkmark" class="w-4 h-4 mr-1"></ion-icon>
+        Register
+        </button>
+      </div>
+</main>
+
+
+<!-- delete confirmation-->
+<div
+  data-twe-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="dropSubjectModal"
+>
+  <div
+    data-twe-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]"
+  >
+    <div
+      class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding"
+    >
+      <div class="relative flex-auto p-4 text-small" data-twe-modal-body-ref>
+        <p class="py-2">Are you sure you want to drop this subject?</p>
+        <p class="py-1">Subject code: {{ subjectToDrop.code }}</p>
+        <p>
+            Subject name: {{ subjectToDrop.name }}
+        </p>
+      </div>
+
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4"
+      >
+        <button
+          class="inline-flex px-5 py-[4px] text-gray-950 font-medium text-[12px] hover:bg-blue-100 border border-[#3ea0af] rounded-lg mr-2"
+          data-twe-modal-dismiss
+        >
+          No
+        </button>
+        <button
+          (click)="drop()"
+          class="inline-flex px-5 py-[4px] text-white font-medium text-[12px] bg-[#3ea0af] hover:bg-[#4CCBDF] border-[#3ea0af] rounded-lg"
+          data-twe-modal-dismiss
+        >
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

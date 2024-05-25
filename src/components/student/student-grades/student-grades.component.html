@@ -1,0 +1,33 @@
+<main class="p-4 space-y-6">
+    <div>
+        All grades for the assignments and exams of registered subjects
+    </div>
+  <div class="w-full flex justify-center py-0">
+    <table aria-hidden="true" class="table-auto w-full text-gray-950 border-collapse">
+      <tbody>
+        <tr *ngFor="let subject of registeredSubjects; let i = index">
+          <td
+            class="border border-x-0 border-b-[1px] border-gray-300 px-10 py-4 text-sm capitalize"
+          >
+            <div class="font-semibold">{{ subject.code }} - {{ subject.name }}</div>
+            <table aria-hidden="true" class="table-auto w-full text-gray-950 mt-4">
+              <tbody>
+                <tr
+                  *ngFor="let assignment of subject.assignments; let i = index"
+                >
+                  <td class="px-2 py-2 text-sm capitalize">{{ i + 1 }}.</td>
+                  <td class="px-10 py-2 text-sm capitalize">
+                    {{ assignment.name }}
+                  </td>
+                  <td class="px-10 py-2 text-sm capitalize">
+                    {{ assignment.grade.mark }} %
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

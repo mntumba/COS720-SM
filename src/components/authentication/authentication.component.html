@@ -1,0 +1,79 @@
+<section class="bg-gray-50 dark:bg-gray-900">
+  <div
+    class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen"
+  >
+    <div class="space-y-4 p-8">
+      <h1 class="text-2xl font-bold leading-tight tracking-tight text-gray-900">
+        Welcome to COS-720 Project
+      </h1>
+      <h5>Please sign in to access the portal.</h5>
+      <form
+        name="form"
+        (ngSubmit)="f.form.valid && authenticate()"
+        class="space-y-4"
+        #f="ngForm"
+        navalidate
+      >
+        <div>
+          <label
+            for="username"
+            class="block mb-1 text-sm font-normal text-gray-600"
+            >Username</label
+          >
+          <input
+            required
+            [(ngModel)]="username"
+            #un="ngModel"
+            id="username"
+            name="username"
+            type="text"
+            class="bg-gray-50 border border-gray-400 text-gray-900 text-sm block w-full px-2 py-1.5"
+          />
+          @if (un.errors && f.submitted) {
+          <span
+            *ngIf="un.errors?.['required']"
+            class="text-xs text-red-500 italic"
+          >
+            Username is required
+          </span>
+          }
+        </div>
+        <div>
+          <label
+            for="password"
+            class="block mb-1 text-sm font-normal text-gray-600"
+            >Password</label
+          >
+          <input
+            required
+            [(ngModel)]="password"
+            #pw="ngModel"
+            id="password"
+            name="password"
+            type="password"
+            class="bg-gray-50 border border-gray-400 text-gray-900 text-sm block w-full px-2 py-1.5"
+          />
+          @if (pw.errors && f.submitted) {
+          <span
+            *ngIf="pw.errors?.['required']"
+            class="text-xs text-red-500 italic"
+          >
+            Password is required
+          </span>
+          }
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-start"></div>
+          <a href="#" class="text-sm font-medium text-blue-800 hover:underline"
+            >Forgot password?</a
+          >
+        </div>
+        <button
+          class="w-full text-white bg-gray-600 font-medium rounded-lg text-sm py-2 text-center"
+        >
+          Sign in
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

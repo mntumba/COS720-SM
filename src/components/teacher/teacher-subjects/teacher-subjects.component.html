@@ -1,0 +1,273 @@
+<main *ngIf="showSubjects" class="p-6 space-y-6">
+    <div class="w-full flex justify-center py-0">
+      <table
+      aria-hidden="true"
+        class="table-auto w-full text-gray-950"
+      >
+        <thead>
+          <tr>
+            <td>
+              </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+              Code
+            </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+               Name
+            </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+                Total Students
+             </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+              Actions
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let subject of subjects; let i=index">
+            <td class="border px-2 py-2 tect-center text-sm capitalize">
+                {{ i + 1 }}.
+              </td>
+            <td class="px-10 py-2 text-sm capitalize">
+              {{ subject.code }}
+            </td>
+            <td class="px-10 py-2 text-sm capitalize">
+                {{ subject.name }}
+            </td>
+            <td class="px-10 py-2 text-sm capitalize">
+                {{ subject.students.length }}
+            </td>
+            <td
+              class="flex items-center px-10 py-2 text-sm"
+            >
+              <button
+              (click)="viewBtnClicked(subject)"
+                class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-md"
+              >
+                <ion-icon
+                  name="eye"
+                  class="flex-shrink-0 h-4 w-4 -ml-1 mr-2"
+                ></ion-icon>
+                View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+
+  <main *ngIf="showSubjectDetails" class="px-6 space-y-6">
+    <div class="relative overflow-y-auto">
+        <ul
+          class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200"
+        >
+          <li class="me-2">
+            <a
+              (click)="assignmentsClicked()"
+              aria-current="page"
+              class="cursor-pointer inline-block px-4 py-2 text-blue-600 bg-gray-100 rounded-t-md active"
+              >Assignments</a
+            >
+          </li>
+          <li class="me-2">
+            <a
+            (click)="studentsClicked()"
+              class="cursor-pointer inline-block px-4 py-2 rounded-t-md hover:text-blue-600 hover:bg-gray-50 focus:text-blue-600 focus:bg-gray-100"
+              >Students</a
+            >
+          </li>
+        </ul>
+        </div>
+
+        <div *ngIf="showAssignments">
+            <h1>Subject assignments details</h1>
+            <div class="w-full flex justify-center py-3">
+                <table
+                aria-hidden="true"
+                class="table-auto w-full text-gray-950"
+              >
+                <thead>
+                  <tr>
+                    <td>
+                      </td>
+                    <td class="px-10 py-2 text-sm font-semibold">
+                      Name
+                    </td>
+                    <td class="px-10 py-2 text-sm font-semibold">
+                       Total Points
+                    </td>
+                    <td class="px-10 py-2 text-sm font-semibold">
+                        Due Date
+                     </td>
+                    <td class="px-10 py-2 text-sm font-semibold">
+                      Actions
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let assignment of selectedSubject.assignments; let i=index">
+                    <td class="px-2 py-2 tect-center text-sm capitalize">
+                        {{ i + 1 }}.
+                      </td>
+                    <td class="px-10 py-2 text-sm capitalize">
+                      {{ assignment.name }}
+                    </td>
+                    <td class="px-10 py-2 text-sm capitalize">
+                        100
+                    </td>
+                    <td class="px-10 py-2 text-sm capitalize">
+                        2024-05-30
+                    </td>
+                    <td
+                      class="flex items-center px-10 py-2 text-sm"
+                    >
+                      <button
+                      *ngIf="assignment.grade.gradeID == 0"
+                      (click)="addGradeBtnClicked(assignment.id)"
+                        class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-md"
+                      >
+                        <ion-icon
+                          name="add"
+                          class="flex-shrink-0 h-4 w-4 -ml-1 mr-2"
+                        ></ion-icon>
+                        Add Grade
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <button
+              (click)="gobackBtnClicked()"
+                class="inline-flex px-5 py-[5px] font-medium text-sm text-blue-600 hover:text-blue-400"
+              >
+              <svg
+              class="w-4 h-4 transform transition-transform -rotate-180 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 5l7 7-7 7M5 5l7 7-7 7"
+              />
+            </svg>
+                Go back
+              </button>
+            </div>
+          </div>
+          <div *ngIf="showStudents">
+            <h1 class="py-4">Registered student</h1>
+            <table
+            aria-hidden="true"
+        class="table-auto w-full text-gray-950"
+      >
+        <thead>
+          <tr>
+            <td>
+              </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+              Student Number
+            </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+               Full Name
+            </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+                Contact
+             </td>
+            <td class="px-10 py-2 text-sm font-semibold">
+              Actions
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of selectedSubject.students; let i=index">
+            <td class="px-2 py-2 tect-center text-sm capitalize">
+                {{ i + 1 }}.
+              </td>
+            <td class="px-10 py-2 text-sm capitalize">
+              {{ student.username }}
+            </td>
+            <td class="px-10 py-2 text-sm capitalize">
+                {{ student.name }} {{ student.surname }}
+            </td>
+            <td class="px-10 py-2 text-sm capitalize">
+                Email: {{ student.email }} / Phone: {{ student.phoneNumber }}
+            </td>
+            <td
+              class="flex items-center px-10 py-2 text-sm"
+            >
+              <button
+              
+                class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-md"
+              >
+                <ion-icon
+                  name="mail"
+                  class="flex-shrink-0 h-4 w-4 -ml-1 mr-2"
+                ></ion-icon>
+                Contact Student
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+          </div>
+  </main>
+
+
+  <main *ngIf="showGradeAddition" class="p-6 space-y-6">
+    <h1>Grades can only be added for registered students. Please add the grade for each student in the box next th their student number</h1>
+    <table class="table-auto w-[80%] text-gray-950 mt-4" aria-hidden="true">
+        <tbody>
+          <tr
+            *ngFor="let student of selectedSubject.students; let i = index"
+          >
+            <td class="px-2 py-2 text-sm capitalize">{{ i + 1 }}.</td>
+            <td class="py-2 text-sm capitalize">
+              {{ student.username }} - {{ student.name }} {{ student.surname }}
+            </td>
+            <td>
+              <input 
+              (change)="addSTudentMark($event, student.username)"
+              class="flex justify-end bg-gray-50 border border-[#49cce0] text-gray-900 text-sm px-3 py-1"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="flex justify-end w-[56%]">
+        <button
+              (click)="gobackToSubjectsBtnClicked()"
+                class="inline-flex px-5 py-[5px] font-medium text-sm text-blue-600 hover:text-blue-400"
+              >
+              <svg
+              class="w-4 h-4 transform transition-transform -rotate-180 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 5l7 7-7 7M5 5l7 7-7 7"
+              />
+            </svg>
+                Go to subjects
+              </button>
+        <button
+            (click)="publishMarks()"
+          class="inline-flex px-5 py-[5px] ml-2 font-semibold text-[12px] text-gray-950 bg-[#49cce0] hover:bg-[#78cbd8] border border-[#49cce0] rounded-md"
+        >
+        <ion-icon name="megaphone" class="w-4 h-4 mr-2"></ion-icon>
+        Publish
+        </button>
+      </div>
+  </main>

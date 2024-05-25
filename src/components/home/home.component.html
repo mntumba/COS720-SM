@@ -1,0 +1,160 @@
+<div class="flex bg-gray-200 min-h-screen">
+  <div class="flex flex-col">
+    <a href="#" class="flex items-center h-20 w-full bg-gray-800 px-2">
+      <span class="text-white text-2xl ml-2" *ngIf="menu">COS-720</span>
+    </a>
+    <div class="flex-grow flex flex-col text-white bg-gray-700">
+      <div class="flex flex-col mx-2 my-6 space-y-4">
+        <a
+        *ngIf="isAdmin" 
+          (click)="clickToShowSummary()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+        >
+          <ion-icon class="text-xl pr-3" name="home"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Dashboard</span>
+        </a>
+        <a
+        *ngIf="isTeacher" 
+          (click)="clickToShowTeacherSummary()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+        >
+          <ion-icon class="text-xl pr-3" name="home"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Dashboard</span>
+        </a>
+        <a
+        app-btn
+        *ngIf="isAdmin" 
+          (click)="clickToShowQualifications()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+          data-twe-toggle="#openModal"
+        >
+          <ion-icon name="newspaper" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Qualifications</span>
+        </a>
+        <a
+        app-btn
+        *ngIf="isStudent" 
+          (click)="clickToShowSubjects()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+          data-twe-toggle="#openModal"
+        >
+          <ion-icon name="newspaper" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Subjects</span>
+        </a>
+        <a
+        app-btn
+        *ngIf="isTeacher" 
+          (click)="clickToShowTeacherSubjects()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+          data-twe-toggle="#openModal"
+        >
+          <ion-icon name="newspaper" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Subjects</span>
+        </a>
+        <a
+        app-btn
+            *ngIf="isAdmin"  
+          (click)="clickToShowTeachers()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+          data-twe-toggle="#openModal"
+        >
+          <ion-icon name="person" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Lecturers</span>
+        </a>
+        <a
+        app-btn
+        *ngIf="isAdmin" 
+          (click)="clickToShowStudents()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+          data-twe-toggle="#openModal"
+        >
+          <ion-icon name="people" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Students</span>
+        </a>
+        <a
+        app-btn
+        *ngIf="isStudent" 
+          (click)="clickToShowGrades()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+          data-twe-toggle="#openModal"
+        >
+          <ion-icon name="receipt" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Grades</span>
+        </a>
+      </div>
+      <div class="border-t-[1px] border-gray-400"></div>
+      <div class="flex flex-col mx-2 my-6 space-y-4">
+        <a
+          (click)="clickToShowProfile()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+        >
+          <ion-icon name="settings" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Profile</span>
+        </a>
+        <a
+          (click)="logout()"
+          class="cursor-pointer flex items-center py-3 active:text-gray-900 active:bg-white rounded-md px-2"
+        >
+          <ion-icon name="exit" class="text-xl pr-3"></ion-icon>
+          <span *ngIf="menu" class="pl-4 pr-14 text-sm">Logout</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <div class="flex-grow text-gray-800">
+    <header class="flex items-center h-20 border-b-[1px] border-gray-300">
+      <button class="px-6 cursor-pointer" (click)="menuClick()">
+        <svg
+          class="w-6 h-6 text-gray-600"
+          [ngClass]="{ 'transform transition-transform -rotate-180': menu }"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 5l7 7-7 7M5 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+      <div class="pl-4 pt-4">
+        <h1 class="text-2xl font-medium mb-2">{{pageTitle}}</h1>
+    </div>
+      <div class="flex flex-shrink-0 items-center ml-auto">
+        <button class="relative inline-flex items-center p-2">
+          <span class="sr-only">User Menu</span>
+          <div class="flex flex-col items-end leading-tight">
+            <span class="font-semibold text-sm capitalize">{{ user.name }} <span class="uppercase">{{ user.surname }}</span></span>
+            @for (role of user.roles; track role) {
+                <span class="text-xs text-gray-600 inline-flex">{{ role.description }}</span>
+            }
+          </div>
+          <span
+            class="flex items-center justify-center h-10 w-10 ml-2 mr-2 bg-gray-100 rounded-full overflow-hidden"
+          >
+            <ion-icon
+              name="person"
+              class="h-[60%] w-[60%] object-cover text-gray-400"
+            ></ion-icon>
+          </span>
+        </button>
+      </div>
+    </header>
+    <app-admin *ngIf="showSummary && (isAdmin || isTeacher)"></app-admin>
+     <app-admin-students *ngIf="showStudents"></app-admin-students>
+     <app-admin-teachers *ngIf="showTeachers"></app-admin-teachers>
+    <app-admin-qualifications *ngIf="showQualifications"></app-admin-qualifications>
+    <app-profile *ngIf="showProfile"></app-profile>
+    <app-student-subjects (pageTitleEvent)="changePageTitle()" (pageChangeEvent)="backAndCancelBtnEvent()" *ngIf="showSubjects"></app-student-subjects>
+    <app-student-grades *ngIf="showGrades"></app-student-grades>
+    <app-teacher *ngIf="showTeacherSummary"></app-teacher>
+    <app-teacher-subjects *ngIf="showTeacherSubjects"></app-teacher-subjects>
+  </div>
+
+  <div id="openModal"></div>
+</div>
