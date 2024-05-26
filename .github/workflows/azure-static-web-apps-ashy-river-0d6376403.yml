@@ -22,8 +22,8 @@ jobs:
           lfs: false
       - name: Set up Node.js environment
         run: |
-          npm install -g @angular/cli@18.13.0
           npm install
+          tsc --project tsconfig.json
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
