@@ -23,26 +23,27 @@ export class AdminService {
     );
   }
 
-  addQualification(qualification: Qualification, sessionToken: string): Observable<Qualification> {
+  addQualification(qualification: Qualification, sessionToken: string, username: string): Observable<Qualification> {
     return this.http.post<Qualification>(
       `${this.apiUrl}/addQualification`,
       qualification,
-      { headers: { sessionToken: sessionToken } }
+      { headers: { sessionToken: sessionToken, username: username } }
     );
   }
 
-  deleteQualification(id: number, sessionToken: string): Observable<Qualification> {
+  deleteQualification(id: number, sessionToken: string, username: string): Observable<Qualification> {
     return this.http.delete<Qualification>(
       `${this.apiUrl}/deleteQualification/${id}`,
-      { headers: { sessionToken: sessionToken } }
+      { headers: { sessionToken: sessionToken, username: username } }
     );
   }
 
-  addSubjects(subjects: Array<Subject>, sessionToken: string): Observable<Array<Subject>> {
+  addSubjects(subjects: Array<Subject>, sessionToken: string, username: string): Observable<Array<Subject>> {
+    console.log(subjects)
     return this.http.post<Array<Subject>>(
       `${this.apiUrl}/addSubjects`,
       subjects,
-      { headers: { sessionToken: sessionToken } }
+      { headers: { sessionToken: sessionToken, username: username } }
     );
   }
 
@@ -67,18 +68,18 @@ export class AdminService {
     );
   }
 
-  addUser(teacher: User, sessionToken: string): Observable<UserResponse> {
+  addUser(teacher: User, sessionToken: string, username: string): Observable<UserResponse> {
     return this.http.post<UserResponse>(
       `${this.apiUrl}/addUser`,
       teacher,
-      { headers: { sessionToken: sessionToken } }
+      { headers: { sessionToken: sessionToken, username: username } }
     );
   }
 
-  deleteUser(username: string, sessionToken: string): Observable<UserResponse> {
+  deleteUser(username: string, sessionToken: string, loggedin: string): Observable<UserResponse> {
     return this.http.delete<UserResponse>(
-      `${this.apiUrl}/addUser/${username}`,
-      { headers: { sessionToken: sessionToken } }
+      `${this.apiUrl}/deleteUser/${username}`,
+      { headers: { sessionToken: sessionToken, username: loggedin } }
     );
   }
 

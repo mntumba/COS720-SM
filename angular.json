@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/cos720-sm",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -26,9 +27,6 @@
             ],
             "styles": [
               "src/styles.css"
-            ],
-            "scripts": [
-              "node_modules/preline/preline.js"
             ]
           },
           "configurations": {
@@ -92,9 +90,6 @@
             ],
             "styles": [
               "src/styles.css"
-            ],
-            "scripts": [
-              "node_modules/preline/preline.js"
             ]
           }
         }

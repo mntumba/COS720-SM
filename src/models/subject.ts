@@ -6,7 +6,7 @@ export class Subject {
     name = '';
     code = '';
     level = { classLevelID: 0, description: '' };
-    classLevelID = '';
+    classLevelID = 0;
     qualificationID = 0;
     teacher = new User();
     students = Array<UserResponse>();
