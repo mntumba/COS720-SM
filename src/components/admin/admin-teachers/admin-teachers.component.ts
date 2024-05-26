@@ -3,18 +3,20 @@ import { User } from '../../../models/user';
 import { IonIcon } from '@ionic/angular/standalone';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HSSelect, HSStaticMethods } from 'preline';
+// import { HSSelect, HSStaticMethods } from 'preline';
 import { AdminService } from '../../../services/admin.service';
 import { Subject } from '../../../models/subject';
 import { UserResponse } from '../../../models/user-response';
 import { BtnDirective } from '../../../btn.directive';
 import { EncryptionService } from '../../../services/encryption.service';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { MultiSelectModule } from 'primeng/multiselect';
 
 
 @Component({
   selector: 'app-admin-teachers',
   standalone: true,
-  imports: [IonIcon, NgFor, NgIf, FormsModule, BtnDirective, NgClass],
+  imports: [IonIcon, NgFor, NgIf, FormsModule, BtnDirective, NgClass, NgMultiSelectDropDownModule],
   templateUrl: './admin-teachers.component.html',
   // styleUrl: './admin-teachers.component.css'
 })
@@ -39,9 +41,14 @@ export class AdminTeachersComponent {
 
   selectedSubject = new Subject();
 
+  selectedSubjects = Array<Subject>();
+
   user = new User();
 
-
+  dropdownSettings = {
+    idField: 'subjectID',
+    textField: 'name',
+  };
 
   constructor(private adminService: AdminService, private encryption: EncryptionService) {
 
@@ -49,31 +56,23 @@ export class AdminTeachersComponent {
     this.adminService.getTeachers(this.user.sessionToken, this.user.username).subscribe((teachers) => {
       this.teachers = teachers;
     });
+
+    this.adminService.getSubjects(this.user.sessionToken, this.user.username).subscribe((teachers) => {
+      this.subjects = teachers;
+    });
   }
 
   addTeacherBtn() {
     this.showTeachers = false;
     this.showAddTeacher = true;
     this.showViewTeacher = false;
-    setTimeout(() => {
-              HSStaticMethods.autoInit();
-            }, 10);
   }
 
   addTeacher() {
     this.teacher.roles.push({ roleId: 2, description: 'Teacher' });
+    this.teacher.subjects = this.selectedSubjects;
 
-    let selectedSubjects = (HSSelect.getInstance('#subjectOptions') as HSSelect)
-      .value as string[];
-    this.subjects.forEach((s) => {
-      selectedSubjects?.forEach((ss) => {
-        if (s.subjectID.toString() == ss) {
-          this.teacher.subjects.push(s);
-        }
-      });
-    });
-
-    this.adminService.addUser(this.teacher, this.user.sessionToken).subscribe(
+    this.adminService.addUser(this.teacher, this.user.sessionToken, this.user.username).subscribe(
       (res) => {
         this.teachers = [...this.teachers, { ...res }];
       }
@@ -81,7 +80,7 @@ export class AdminTeachersComponent {
   }
 
   deleteTeacher() {
-    this.adminService.deleteUser(this.selectedTeacher.username, this.user.sessionToken).subscribe(
+    this.adminService.deleteUser(this.selectedTeacher.username, this.user.sessionToken, this.user.username).subscribe(
       (res) => {
         let ts = this.teachers.filter((t) => t.username !== res.username);
         this.teachers = [...ts];

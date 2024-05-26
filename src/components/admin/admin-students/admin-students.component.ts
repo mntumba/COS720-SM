@@ -34,7 +34,7 @@ export class AdminStudentsComponent {
   }
 
   deleteStudent() {
-    this.adminService.deleteUser(this.selectedStudent.username, this.user.sessionToken).subscribe(
+    this.adminService.deleteUser(this.selectedStudent.username, this.user.sessionToken, this.user.username).subscribe(
       (res) => {
         let sts = this.students.filter((s) => s.username !== res.username);
         this.students = [...sts];

@@ -1,118 +1,108 @@
-
-
 <main *ngIf="showTeachers" class="p-6 space-y-6">
   <div>
-  <div class="flex flex-wrap items-start justify-end -mb-3">
-    <button
-    app-btn
-      (click)="addTeacherBtn()"
-      class="inline-flex px-5 py-[5px] font-semibold text-[12px] text-gray-950 bg-[#46b0c0] border border-[#49cce0] rounded-md"
-    >
-      <svg
-        class="flex-shrink-0 h-4 w-4 -ml-1 mr-2"
-        focusable="false"
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        data-testid="addStudent"
+    <div class="flex flex-wrap items-start justify-end -mb-3">
+      <button
+        app-btn
+        (click)="addTeacherBtn()"
+        class="inline-flex px-5 py-[5px] font-semibold text-[12px] text-gray-950 bg-[#46b0c0] border border-[#49cce0] rounded-md"
       >
-        <path
-          d="M13 8c0-2.21-1.79-4-4-4S5 5.79 5 8s1.79 4 4 4 4-1.79 4-4zm2 2v2h3v3h2v-3h3v-2h-3V7h-2v3h-3zM1 18v2h16v-2c0-2.66-5.33-4-8-4s-8 1.34-8 4z"
-        ></path>
-      </svg>
+        <svg
+          class="flex-shrink-0 h-4 w-4 -ml-1 mr-2"
+          focusable="false"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          data-testid="addStudent"
+        >
+          <path
+            d="M13 8c0-2.21-1.79-4-4-4S5 5.79 5 8s1.79 4 4 4 4-1.79 4-4zm2 2v2h3v3h2v-3h3v-2h-3V7h-2v3h-3zM1 18v2h16v-2c0-2.66-5.33-4-8-4s-8 1.34-8 4z"
+          ></path>
+        </svg>
 
-      Add Teacher
-    </button>
+        Add Teacher
+      </button>
+    </div>
+    <div class="w-full flex justify-center py-6">
+      <table aria-hidden="true" class="table-auto w-full text-gray-950">
+        <thead>
+          <tr>
+            <td></td>
+            <td class="px-10 py-2 text-sm font-semibold">Username</td>
+            <td class="px-10 py-2 text-sm font-semibold">Full Name</td>
+            <td class="px-10 py-2 text-sm font-semibold">Subjects</td>
+            <td class="px-10 py-2 text-sm font-semibold">Actions</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let teacher of teachers; let i = index">
+            <td class="px-2">{{ i + 1 }}.</td>
+            <td class="px-10 py-2 text-sm capitalize">
+              {{ teacher.username }}
+            </td>
+            <td class="px-10 py-2 text-sm capitalize">
+              {{ teacher.name }} {{ teacher.surname }}
+            </td>
+            <td class="px-10 py-2 text-sm capitalize">
+              <div *ngFor="let subject of teacher.subjects; let i = index">
+                {{ subject.code }} - {{ subject.name }}
+              </div>
+            </td>
+            <td class="flex items-center px-10 py-2 text-sm">
+              <button
+                app-btn
+                (click)="selectedTeacher = teacher"
+                data-twe-toggle="modal"
+                data-twe-target="#deleteTeacherModal"
+                class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#49cce0] border border-[#49cce0] rounded-md"
+              >
+                <ion-icon
+                  name="trash"
+                  class="flex-shrink-0 h-4 w-4 -ml-1 mr-2 text-red-700"
+                ></ion-icon>
+                Delete
+              </button>
+              <span class="px-2">|</span>
+              <button
+                app-btn
+                (click)="viewTeacherBtnClicked(teacher)"
+                class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#49cce0] border border-[#49cce0] rounded-md"
+              >
+                <ion-icon
+                  name="eye"
+                  class="flex-shrink-0 h-4 w-4 -ml-1 mr-2"
+                ></ion-icon>
+                View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="w-full flex justify-center py-6">
-    <table
-    aria-hidden="true"
-      class="table-auto w-full text-gray-950"
-    >
-      <thead>
-        <tr>
-          <td></td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Username
-          </td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Full Name
-          </td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Subjects
-          </td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Actions
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let teacher of teachers; let i=index">
-          <td class="px-2">
-            {{i + 1}}.
-          </td>
-          <td class="px-10 py-2 text-sm capitalize">
-            {{ teacher.username }}
-          </td>
-          <td class="px-10 py-2 text-sm capitalize">
-            {{ teacher.name }} {{ teacher.surname }}
-          </td>
-          <td class="px-10 py-2 text-sm capitalize">
-            <div *ngFor="let subject of teacher.subjects; let i=index">
-              {{subject.code}} - {{subject.name}} 
-            </div>
-          </td>
-          <td
-            class="flex items-center px-10 py-2 text-sm"
-          >
-            <button
-            app-btn
-              (click)="selectedTeacher = teacher"
-              data-twe-toggle="modal"
-              data-twe-target="#deleteTeacherModal"
-              class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#49cce0] border border-[#49cce0] rounded-md"
-            >
-              <ion-icon
-                name="trash"
-                class="flex-shrink-0 h-4 w-4 -ml-1 mr-2 text-red-700"
-              ></ion-icon>
-              Delete
-            </button>
-            <span class="px-2">|</span>
-            <button
-            app-btn
-              (click)="viewTeacherBtnClicked(teacher)"
-              class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#49cce0] border border-[#49cce0] rounded-md"
-            >
-              <ion-icon
-                name="eye"
-                class="flex-shrink-0 h-4 w-4 -ml-1 mr-2"
-              ></ion-icon>
-              View
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 </main>
-
 
 <main *ngIf="showAddTeacher" class="p-6 space-y-6">
   <div class="relative flex-auto">
     <section class="grid sm:grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="w-full px-10">
-          Use the Add lecturer / professor form to capture and add a new user with lecturer role.
-          Please note that a lecturer should have at least one subject assigned to them. 
-          If there is no subjects available in the subctects option dropdown below, 
-          use the qualification tab to add a subject for which you need the lecturer added.
-        </div>
-        <div class="flex justify-center space-y-4 w-full px-10">
-          <div class="px-10 pb-5 shadow-xl w-full">
-            <h1 class="font-semibold py-5">Add lecturer / professor</h1>
-          <form class="space-y-4" #f="ngForm" (ngSubmit)="f.form.valid && addTeacher()" navalidate>
+      <div class="w-full px-10">
+        Use the Add lecturer / professor form to capture and add a new user with
+        lecturer role. Please note that a lecturer should have at least one
+        subject assigned to them. If there is no subjects available in the
+        subctects option dropdown below, use the qualification tab to add a
+        subject for which you need the lecturer added.
+      </div>
+      <div class="flex justify-center space-y-4 w-full px-10">
+        <div class="px-10 pb-5 shadow-xl w-full">
+          <h1 class="font-semibold py-5">Add lecturer / professor</h1>
+          <form
+            class="space-y-4"
+            #f="ngForm"
+            (ngSubmit)="f.form.valid && addTeacher()"
+            navalidate
+          >
             <div>
-              <label for="tname" class="block mb-1 text-xs font-normal text-gray-950"
+              <label
+                for="tname"
+                class="block mb-1 text-xs font-normal text-gray-950"
                 >Teacher Name</label
               >
               <input
@@ -133,7 +123,9 @@
               }
             </div>
             <div>
-              <label for="tsurname" class="block mb-1 text-xs font-normal text-gray-950"
+              <label
+                for="tsurname"
+                class="block mb-1 text-xs font-normal text-gray-950"
                 >Teacher Surname</label
               >
               <input
@@ -154,7 +146,9 @@
               }
             </div>
             <div>
-              <label for="tphone" class="block mb-1 text-xs font-normal text-gray-950"
+              <label
+                for="tphone"
+                class="block mb-1 text-xs font-normal text-gray-950"
                 >Phone Number</label
               >
               <input
@@ -175,55 +169,22 @@
               }
             </div>
             <div>
-              <!-- Select -->
-              <label for="subjectOptions" class="block mb-1 text-xs font-normal text-gray-950"
+              <label
+                for="subjectOptions"
+                class="block mb-1 text-xs font-normal text-gray-950"
                 >Select Subjects</label
               >
-              <select
+
+              <ng-multiselect-dropdown
+                name="subjectOptions"
                 id="subjectOptions"
-                wire:model="subjectOptions"
-                multiple=""
-                data-hs-select='{
-"placeholder": "Select multiple options...",
-"toggleTag": "<button type=\"button\"></button>",
-"toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 px-2 flex text-nowrap w-full cursor-pointer bg-gray-50 border border-gray-400 text-gray-900 text-start text-xs before:absolute before:inset-0 before:z-[1]",
-"toggleCountText": "selected",
-"dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-"optionClasses": "py-1 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-"optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"flex-shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
-"extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"flex-shrink-0 size-3.5 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-}'
-                class="hidden text-gray-900"
+                [settings]="dropdownSettings"
+                [data]="subjects"
+                [(ngModel)]="selectedSubjects"
               >
-                <option
-                  *ngFor="let subject of subjects"
-                  [value]="subject.subjectID"
-                >
-                  {{ subject.code }} - {{ subject.name }}
-                </option>
-              </select>
+              </ng-multiselect-dropdown>
             </div>
-            <!-- <div>
-              <label for="tpassword" class="block mb-1 text-xs font-normal text-gray-950"
-                >Password</label
-              >
-              <input
-                required
-                [(ngModel)]="teacher.password"
-                #pw="ngModel"
-                name="tpassword"
-                id="tpassword"
-                class="bg-gray-50 border border-gray-400 text-gray-900 block w-full px-2 py-1"
-              />
-              @if (pw.errors && isTeacherEmpty) {
-              <span
-                *ngIf="pw.errors?.['required']"
-                class="text-xs text-red-500 italic"
-              >
-                Password is required
-              </span>
-              }
-            </div> -->
+
             <div>
               <label
                 for="tpassword"
@@ -241,37 +202,57 @@
               />
               @if ((pw.errors && f.submitted) || pw.dirty) {
               <div class="text-red-600 text-xs px-2">
-                <span class="block" [ngClass]="{'text-green-700': pw?.value?.match('^(?=.*[A-Z])')}">At least one uppercase letter.</span>
-                <span class="block" [ngClass]="{'text-green-700': pw?.value?.match('(?=.*[a-z])')}">At least one lowercase letter.</span>
-                <span class="block" [ngClass]="{'text-green-700': pw?.value?.match('(.*[0-9].*)')}">At least one digit.</span>
-                <span class="block" [ngClass]="{'text-green-700': pw?.value?.match('.{8,}')}">At least 8 characters long.</span>
-             </div>
+                <span
+                  class="block"
+                  [ngClass]="{
+                    'text-green-700': pw?.value?.match('^(?=.*[A-Z])')
+                  }"
+                  >At least one uppercase letter.</span
+                >
+                <span
+                  class="block"
+                  [ngClass]="{
+                    'text-green-700': pw?.value?.match('(?=.*[a-z])')
+                  }"
+                  >At least one lowercase letter.</span
+                >
+                <span
+                  class="block"
+                  [ngClass]="{
+                    'text-green-700': pw?.value?.match('(.*[0-9].*)')
+                  }"
+                  >At least one digit.</span
+                >
+                <span
+                  class="block"
+                  [ngClass]="{ 'text-green-700': pw?.value?.match('.{8,}') }"
+                  >At least 8 characters long.</span
+                >
+              </div>
               }
             </div>
             <div
-        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2"
-      >
-        <button
-        (click)="discardBtnClicked()"
-          class="inline-flex px-5 py-[4px] text-gray-950 font-medium text-[12px] hover:bg-blue-100 border border-[#46b0c0] rounded-md mr-2"
-        >
-        
-          Discard
-        </button>
-        <button
-          type="submit"
-          class="inline-flex px-5 py-[4px] text-gray-950 font-medium text-[12px] bg-[#46b0c0] border border-[#46b0c0] rounded-md"
-        >
-          Add Lecturer
-        </button>
-      </div>
+              class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2"
+            >
+              <button
+                (click)="discardBtnClicked()"
+                class="inline-flex px-5 py-[4px] text-gray-950 font-medium text-[12px] hover:bg-blue-100 border border-[#46b0c0] rounded-md mr-2"
+              >
+                Discard
+              </button>
+              <button
+                type="submit"
+                class="inline-flex px-5 py-[4px] text-gray-950 font-medium text-[12px] bg-[#46b0c0] border border-[#46b0c0] rounded-md"
+              >
+                Add Lecturer
+              </button>
+            </div>
           </form>
         </div>
-        </div>
+      </div>
     </section>
   </div>
 </main>
-
 
 <main *ngIf="showViewTeacher" class="px-6 space-y-6">
   <div class="relative overflow-y-auto">
@@ -299,7 +280,7 @@
       <h1 class="py-4">Basic Details</h1>
       <div class="w-full flex justify-center py-3">
         <table
-        aria-hidden="true"
+          aria-hidden="true"
           class="table-auto w-full text-gray-950 border-collapse"
         >
           <tbody>
@@ -341,30 +322,19 @@
     </div>
     <div *ngIf="showSubjects">
       <h1 class="py-4">Subjects List</h1>
-      <table
-      aria-hidden="true"
-        class="table-auto w-full text-gray-950"
-      >
+      <table aria-hidden="true" class="table-auto w-full text-gray-950">
         <thead>
           <tr>
             <td></td>
-            <td class="px-10 py-2 text-sm font-semibold">
-              Subject Code
-            </td>
-            <td class="px-10 py-2 text-sm font-semibold">
-              Subject Name
-            </td>
-            <td class="px-10 py-2 text-sm font-semibold">
-              Class
-            </td>
-            <td class="px-10 py-2 text-sm font-semibold">
-              Actions
-            </td>
+            <td class="px-10 py-2 text-sm font-semibold">Subject Code</td>
+            <td class="px-10 py-2 text-sm font-semibold">Subject Name</td>
+            <td class="px-10 py-2 text-sm font-semibold">Class</td>
+            <td class="px-10 py-2 text-sm font-semibold">Actions</td>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let subject of selectedTeacher.subjects; let i=index">
-            <td class="px-2 py-2">{{i+1}}.</td>
+          <tr *ngFor="let subject of selectedTeacher.subjects; let i = index">
+            <td class="px-2 py-2">{{ i + 1 }}.</td>
             <td class="px-10 py-2 capitalize text-sm">
               {{ subject.code }}
             </td>
@@ -377,7 +347,7 @@
             <td class="px-10 py-2 capitalize text-sm">
               <span>
                 <button
-                app-btn
+                  app-btn
                   (click)="viewStudentBtnClicked(subject)"
                   class="inline-flex px-2 py-[4px] font-medium text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-lg"
                 >
@@ -399,53 +369,41 @@
       (click)="discardBtnClicked()"
       class="inline-flex px-5 py-[5px] font-semibold text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-md"
     >
-    <svg
-    class="w-4 h-4 text-gray-600 transform transition-transform -rotate-180 mr-2"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M13 5l7 7-7 7M5 5l7 7-7 7"
-    />
-  </svg>
+      <svg
+        class="w-4 h-4 text-gray-600 transform transition-transform -rotate-180 mr-2"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 5l7 7-7 7M5 5l7 7-7 7"
+        />
+      </svg>
       Go back
     </button>
   </div>
 </main>
 
-
 <main *ngIf="showSubjectStudents" class="px-6 space-y-6">
   <div class="relative overflow-y-auto p-4">
     <h1 class="py-4">Students List</h1>
-    <table
-    aria-hidden="true"
-      class="table-auto w-full text-gray-950"
-    >
+    <table aria-hidden="true" class="table-auto w-full text-gray-950">
       <thead>
         <tr>
           <td></td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Student Number
-          </td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Student Name
-          </td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Grade
-          </td>
-          <td class="px-10 py-2 text-sm font-semibold">
-            Actions
-          </td>
+          <td class="px-10 py-2 text-sm font-semibold">Student Number</td>
+          <td class="px-10 py-2 text-sm font-semibold">Student Name</td>
+          <td class="px-10 py-2 text-sm font-semibold">Grade</td>
+          <td class="px-10 py-2 text-sm font-semibold">Actions</td>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let student of selectedSubject.students; let i=index">
-          <td class="px-2 py-2">{{i+1}}.</td>
+        <tr *ngFor="let student of selectedSubject.students; let i = index">
+          <td class="px-2 py-2">{{ i + 1 }}.</td>
           <td class="px-10 py-2 capitalize text-sm">
             {{ student.username }}
           </td>
@@ -475,25 +433,24 @@
       (click)="discardBtnClicked()"
       class="inline-flex px-5 py-[5px] font-semibold text-[12px] text-gray-950 hover:bg-[#4CCBDF] border border-[#3ea0af] rounded-md"
     >
-    <svg
-    class="w-4 h-4 text-gray-600 transform transition-transform -rotate-180 mr-2"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M13 5l7 7-7 7M5 5l7 7-7 7"
-    />
-  </svg>
+      <svg
+        class="w-4 h-4 text-gray-600 transform transition-transform -rotate-180 mr-2"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 5l7 7-7 7M5 5l7 7-7 7"
+        />
+      </svg>
       Go back
     </button>
   </div>
 </main>
-
 
 <!-- delete confirmation-->
 <div

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 
 import { FormsModule } from '@angular/forms';
@@ -7,18 +7,20 @@ import { Qualification } from '../../../models/qualification';
 import { AdminService } from '../../../services/admin.service';
 import { Subject } from '../../../models/subject';
 import { User } from '../../../models/user';
-import { HSSelect } from 'preline';
+import { DropdownModule } from 'primeng/dropdown';
 import { BtnDirective } from '../../../btn.directive';
 import { EncryptionService } from '../../../services/encryption.service';
+import { ClassLevel } from '../../../models/class-level';
+
 
 @Component({
   selector: 'app-admin-qualifications',
   standalone: true,
-  imports: [IonIcon, FormsModule, NgIf, NgFor, BtnDirective, NgClass],
+  imports: [IonIcon, FormsModule, NgIf, NgFor, BtnDirective, NgClass, DropdownModule],
   templateUrl: './admin-qualifications.component.html',
   // styleUrl: './admin-qualifications.component.css'
 })
-export class AdminQualificationsComponent {
+export class AdminQualificationsComponent{
 
   @ViewChild('addQualificationBtn', { static: false }) btnElementRef!: ElementRef;
 
@@ -45,12 +47,9 @@ export class AdminQualificationsComponent {
   showAddSubject = false;
   showAddStudent = false;
 
-  classLevels = [
-    { classLevelID: 1, description: 'First year'},
-    { classLevelID: 2, description: 'Second year'},
-    { classLevelID: 3, description: 'Third year'}
-  ]
+  classLevels = Array<ClassLevel>();
 
+  selectedClassLevel = 0
   user = new User();
 
   constructor(private adminService: AdminService, private encryption: EncryptionService) {
@@ -58,6 +57,14 @@ export class AdminQualificationsComponent {
     this.adminService.getQualifications(this.user.sessionToken, this.user.username).subscribe((qualifications) => {
       this.qualifications = qualifications;
     });
+
+    this.classLevels = [
+      { classLevelID: 1, description: 'First year'},
+    { classLevelID: 2, description: 'Second year'},
+    { classLevelID: 3, description: 'Third year'}
+    ]
+
+    this.selectedClassLevel = 1;
   }
 
   addBtnClicked() {
@@ -90,11 +97,8 @@ export class AdminQualificationsComponent {
 
 
   addSubject(subject: Subject) {
-    let selectedClassLevel = (HSSelect.getInstance('#classOptions') as HSSelect)
-      .value as string;
-
-      subject.classLevelID = selectedClassLevel;
-      subject.level.description = this.classLevels[(selectedClassLevel as unknown as number) -1].description;
+      subject.level = Object.values(this.classLevels)[this.selectedClassLevel - 1];
+      subject.classLevelID = this.selectedClassLevel;
 
     if (subject.code !== '' && subject.name !== '') {
       subject.qualificationID = this.selectedQualification.qualificationID;
@@ -113,7 +117,7 @@ export class AdminQualificationsComponent {
   addQualification() {
     if (this.qualification.code !== '' && this.qualification.name !== '') {
       this.isQualificationEmpty = false;
-      this.adminService.addQualification(this.qualification, this.user.sessionToken).subscribe(
+      this.adminService.addQualification(this.qualification, this.user.sessionToken, this.user.username).subscribe(
         (res) => {
           this.qualifications = [...this.qualifications, { ...res }];
         },
@@ -127,7 +131,8 @@ export class AdminQualificationsComponent {
   }
 
   addSubjects() {
-    this.adminService.addSubjects(this.subjects, this.user.sessionToken).subscribe(
+    console.log(this.subjects)
+    this.adminService.addSubjects(this.subjects, this.user.sessionToken, this.user.username).subscribe(
       (res) => {
         this.selectedQualification.subjects = [
           ...this.selectedQualification.subjects,
@@ -141,10 +146,9 @@ export class AdminQualificationsComponent {
   }
 
   addStudent() {
-    // if (this.student.password)
     this.student.roles.push({ roleId: 3, description: 'Student' });
     this.student.qualificationID = this.selectedQualification.qualificationID;
-    this.adminService.addUser(this.student, this.user.sessionToken).subscribe(
+    this.adminService.addUser(this.student, this.user.sessionToken, this.user.username).subscribe(
       (res) => {
         this.selectedQualification.students = [
           ...this.selectedQualification.students,
@@ -156,7 +160,7 @@ export class AdminQualificationsComponent {
 
   deleteQualification() {
     this.adminService
-      .deleteQualification(this.selectedQualification.qualificationID, this.user.sessionToken)
+      .deleteQualification(this.selectedQualification.qualificationID, this.user.sessionToken, this.user.username)
       .subscribe(
         (res) => {
           // let qs = this.qualifications.filter(
